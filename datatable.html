@@ -4,21 +4,26 @@
     <title>Drag and Drop CSV to DataTable</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
     <style>
-        body { font-family: Arial, sans-serif; }
+        body { font-family: Arial, sans-serif; background-color: #a0aecd; color: #ffffff; }
         .container { width: 80%; margin: auto; margin-top: 20px; }
         #dropArea {
-            border: 2px dashed #ccc;
+            border: 2px dashed #ffffff;
             padding: 20px;
             text-align: center;
-            height: 50vh; /* 50% of the viewport height */
+            height: 50vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
+            background-color: #000000;
         }
         #dataTable {
-            margin-top: 30px; /* Padding between drop area and table */
+            margin-top: 30px;
+            color: #000000;
+            background-color: #ffffff;
         }
+        .dataTables_wrapper .dataTables_filter input { color: #000000; }
+        .dataTables_wrapper .dataTables_length select { color: #000000; }
     </style>
 </head>
 <body>
@@ -66,8 +71,8 @@
 
         function displayData(data) {
             $('#dataTable').DataTable({
-                data: data.slice(1), // Skip header row for data
-                columns: data[0].map(header => ({ title: header })), // Use first row for headers
+                data: data.slice(1),
+                columns: data[0].map(header => ({ title: header })),
                 destroy: true
             });
         }
