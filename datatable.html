@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drag and Drop CSV to DataTable</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; margin-top: 20px; }
+        #dropArea {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            height: 50vh; /* 50% of the viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        #dataTable {
+            margin-top: 30px; /* Padding between drop area and table */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="dropArea">Drag and drop a CSV file here</div>
+        <table id="dataTable" class="display" width="100%"></table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <script>
+        let dropArea = document.getElementById('dropArea');
+
+        dropArea.addEventListener('dragover', (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        });
+
+        dropArea.addEventListener('drop', (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            let file = event.dataTransfer.files[0];
+            processCSV(file);
+        });
+
+        function processCSV(file) {
+            let reader = new FileReader();
+            reader.onload = (event) => {
+                let data = event.target.result;
+                let parsedData = parseCSV(data);
+                displayData(parsedData);
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSV(data) {
+            let rows = data.split("\n").map(row => row.split(","));
+            let maxLength = rows.reduce((max, row) => Math.max(max, row.length), 0);
+            return rows.map(row => {
+                while (row.length < maxLength) row.push('');
+                return row;
+            });
+        }
+
+        function displayData(data) {
+            $('#dataTable').DataTable({
+                data: data.slice(1), // Skip header row for data
+                columns: data[0].map(header => ({ title: header })), // Use first row for headers
+                destroy: true
+            });
+        }
+    </script>
+</body>
+</html>
