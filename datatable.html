@@ -4,10 +4,16 @@
     <title>Drag and Drop CSV to DataTable</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
     <style>
-        body { font-family: Arial, sans-serif; background-color: #a0aecd; color: #ffffff; }
+        body { font-family: Arial, sans-serif; background-color: #f0f8ff; color: #000000; }
         .container { width: 80%; margin: auto; margin-top: 20px; }
+        h1 {
+            text-align: center;
+            color: #000000;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
         #dropArea {
-            border: 2px dashed #ffffff;
+            border: 2px dashed #000000;
             padding: 20px;
             text-align: center;
             height: 50vh;
@@ -15,23 +21,82 @@
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            background-color: #000000;
+            background-color: #ffebcd;
+            border-radius: 20px; /* Rounded edges */
+            margin-bottom: 30px; /* Space between the drop area and the table */
         }
         #dataTable {
-            margin-top: 30px;
             color: #000000;
-            background-color: #ffffff;
+            background-color: #f5f5dc;
+            border: 1px solid #ddd; /* Border */
+            border-radius: 10px; /* Rounded edges */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15); /* Shadow */
         }
         .dataTables_wrapper .dataTables_filter input { color: #000000; }
         .dataTables_wrapper .dataTables_length select { color: #000000; }
     </style>
+
+    <h1>CSV Visualizer</h1>
 </head>
 <body>
     <div class="container">
         <div id="dropArea">Drag and drop a CSV file here</div>
         <table id="dataTable" class="display" width="100%"></table>
     </div>
+    <div class="container">
+        <canvas id="chart1"></canvas>
+    </div>
+    <div class="container">
+        <canvas id="chart2"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Assuming you have some data to visualize
+        var data1 = {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ]
+            }]
+        };
 
+        var data2 = {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [7, 11, 5, 8, 3, 7],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ]
+            }]
+        };
+
+        var ctx1 = document.getElementById('chart1').getContext('2d');
+        var chart1 = new Chart(ctx1, {
+            type: 'bar',
+            data: data1,
+        });
+
+        var ctx2 = document.getElementById('chart2').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: data2,
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
     <script>
